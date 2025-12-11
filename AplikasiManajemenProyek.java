@@ -6,7 +6,8 @@ import java.io.BufferedReader;
 
 public class AplikasiManajemenProyek{
 
-    //Function Login Akun
+    //===Function Login Akun
+
     public static boolean login(String usn, String pass) {
         boolean login = false;
         boolean akunDitemukan = false;
@@ -40,7 +41,8 @@ public class AplikasiManajemenProyek{
         return login;
     }
 
-    //Function Register Akun
+    //===Function Register Akun
+
     public static void register(String usn, String pass, String statAcc) {
         try {
             boolean usernameDigunakan = false;
@@ -68,7 +70,8 @@ public class AplikasiManajemenProyek{
         }
     }
 
-    //Function Menentukan Status Akun (admin/pekerja)
+    //===Function Menentukan Status Akun (admin/pekerja)
+
     public static boolean statusAdmin(String usn, String pass) {
         boolean statusAdmin = false;
         try {
@@ -92,8 +95,17 @@ public class AplikasiManajemenProyek{
         return statusAdmin;
     }
 
+    //===Function Dashboard Admin
 
-    //Main Function
+
+
+
+    //===Function Dashboard Pekerja
+
+
+
+    //===Main Function
+
     public static void main(String[] args) {
         //Inisialisasi 
 
@@ -101,27 +113,28 @@ public class AplikasiManajemenProyek{
         boolean statusLogin = false;
         boolean statusAdmin = false;
 
-        //Onboarding Page (Halaman Pembuka)
+        //---Onboarding Page (Halaman Pembuka)
 
         String asciiColorMerah = "\u001B[31m";
         String asciiColorHijau = "\u001B[32m";
         String asciiColorBiru = "\u001B[34m";
         String asciiColorReset = "\u001B[0m";
-        System.out.println(asciiColorHijau + "============================================================================" + asciiColorReset);
-        System.out.println(asciiColorMerah + "______          _           _    ___  ___" + asciiColorReset);
-        System.out.println(asciiColorMerah + "| ___ \\        (_)         | |   |  \\/  |" + asciiColorReset);
-        System.out.println(asciiColorMerah + "| |_/ / __ ___  _  ___  ___| |_  | .  . | __ _ _ __   __ _  __ _  ___ _ __" + asciiColorReset);
-        System.out.println(asciiColorMerah + "|  __/ '__/ _ \\| |/ _ \\/ __| __| | |\\/| |/ _` | '_ \\ / _` |/ _` |/ _ \\ '__|" + asciiColorReset);
-        System.out.println(asciiColorMerah + "| |  | | | (_) | |  __/ (__| |_  | |  | | (_| | | | | (_| | (_| |  __/ |" + asciiColorReset);
-        System.out.println(asciiColorMerah + "\\_|  |_|  \\___/| |\\___|\\___|\\__| \\_|  |_/\\__,_|_| |_|\\__,_|\\__, |\\___|_|" + asciiColorReset);
-        System.out.println(asciiColorMerah + "              _/ |                                          __/ |" + asciiColorReset);
-        System.out.println(asciiColorMerah + "             |__/                                          |___/" + asciiColorReset);
-        System.out.println(asciiColorHijau + "============================================================================" + asciiColorReset);
+        System.out.println(asciiColorMerah + "=================================================================================" + asciiColorReset);
+        System.out.println(asciiColorHijau + "  ____            _           _         __  __                                   " + asciiColorReset);
+        System.out.println(asciiColorHijau + " |  _ \\ _ __ ___ (_) ___  ___| |_      |  \\/  | __ _ _ __   __ _  __ _  ___ _ __ " + asciiColorReset);
+        System.out.println(asciiColorHijau + " | |_) | '__/ _ \\| |/ _ \\/ __| __|     | |\\/| |/ _` | '_ \\ / _` |/ _` |/ _ \\ '__|" + asciiColorReset);
+        System.out.println(asciiColorHijau + " |  __/| | | (_) | |  __/ (__| |_      | |  | | (_| | | | | (_| | (_| |  __/ |   " + asciiColorReset);
+        System.out.println(asciiColorHijau + " |_|   |_|  \\___// |\\___|\\___|\\__|     |_|  |_|\\__,_|_| |_|\\__,_|\\__, |\\___|_|   " + asciiColorReset);
+        System.out.println(asciiColorHijau + "               |__/                                              |___/           " + asciiColorReset);
+        System.out.println(asciiColorMerah + "=================================================================================" + asciiColorReset);
 
-        System.out.println(asciiColorBiru + "               Selamat Datang di Aplikasi Manajemen Proyek!" + asciiColorReset);
+
+        System.out.println(asciiColorBiru + "                   Selamat Datang di Aplikasi Manajemen Proyek!" + asciiColorReset);
 
         //Select Menu
 
+        String username = "";
+        
         while(true){
             System.out.println("\n");
             System.out.println("[1] Login");
@@ -133,7 +146,7 @@ public class AplikasiManajemenProyek{
             int pilihanMenu = input.nextInt();
             if(pilihanMenu == 1){
                 System.out.print("-> Masukkan Username: ");
-                String username = input.next();
+                username = input.next();
                 System.out.print("-> Masukkan Password: ");
                 String password = input.next();
                 statusLogin = login(username, password);
@@ -162,17 +175,52 @@ public class AplikasiManajemenProyek{
             }
         }
         
-        //Fitur Admin
+        //---Fitur Admin
 
         if(statusLogin && statusAdmin){
-            System.out.println("page admin");
+            System.out.println("\n");
+            System.out.println(asciiColorMerah + "=================================================================================" + asciiColorReset);
+            System.out.println(asciiColorHijau + "                 ____            _     _                         _ " + asciiColorReset);
+            System.out.println(asciiColorHijau + "                |  _ \\  __ _ ___| |__ | |__   ___   __ _ _ __ __| |" + asciiColorReset);
+            System.out.println(asciiColorHijau + "                | | | |/ _` / __| '_ \\| '_ \\ / _ \\ / _` | '__/ _` |" + asciiColorReset);
+            System.out.println(asciiColorHijau + "                | |_| | (_| \\__ \\ | | | |_) | (_) | (_| | | | (_| |" + asciiColorReset);
+            System.out.println(asciiColorHijau + "                |____/ \\__,_|___/_| |_|_.__/ \\___/ \\__,_|_|  \\__,_|" + asciiColorReset);
+            System.out.println("                                                                   ");
+            System.out.println(asciiColorMerah + "=================================================================================" + asciiColorReset);
+            System.out.println(asciiColorBiru + "                   Selamat Datang di Dashboard Admin " + username + "!" + asciiColorReset);
+
+            //---Dashboard Admin
+            
+
+            //---Select Menu Admin Page
+
+            System.out.println("\n");
+            System.out.println("[1] Tambah Proyek");
+            System.out.println("[2] Edit Proyek");
+            System.out.println("[3] Hapus Proyek");
+            System.out.println("[4] Keluar");
+            System.out.print("-> Masukkan Pilihan: ");
+            int pilihanMenuAdmin = input.nextInt();
         }
 
 
-        //Fitur Pekerja
+        //---Fitur Pekerja
 
         if(statusLogin && !statusAdmin){
-            System.out.println("page pekerja");
+            System.out.println("\n");
+            System.out.println(asciiColorMerah + "=================================================================================" + asciiColorReset);
+            System.out.println(asciiColorHijau + "                 ____            _     _                         _ " + asciiColorReset);
+            System.out.println(asciiColorHijau + "                |  _ \\  __ _ ___| |__ | |__   ___   __ _ _ __ __| |" + asciiColorReset);
+            System.out.println(asciiColorHijau + "                | | | |/ _` / __| '_ \\| '_ \\ / _ \\ / _` | '__/ _` |" + asciiColorReset);
+            System.out.println(asciiColorHijau + "                | |_| | (_| \\__ \\ | | | |_) | (_) | (_| | | | (_| |" + asciiColorReset);
+            System.out.println(asciiColorHijau + "                |____/ \\__,_|___/_| |_|_.__/ \\___/ \\__,_|_|  \\__,_|" + asciiColorReset);
+            System.out.println("                                                                   ");
+            System.out.println(asciiColorMerah + "=================================================================================" + asciiColorReset);
+            System.out.println(asciiColorBiru + "                   Selamat Datang di Dashboard Pekerja " + username + "!" + asciiColorReset);
+
+            //---Dashboard Pekerja
+
+            //---Select Menu Pekerja
         }
         
     }

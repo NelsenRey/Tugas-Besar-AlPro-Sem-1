@@ -1,2 +1,3 @@
 nelsen:nelsen123:admin
 budi:budi123:pekerja
+cristo:cristo123:admin
