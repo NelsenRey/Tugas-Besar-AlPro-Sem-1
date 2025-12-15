@@ -1,3 +1,3 @@
-nelsen:nelsen123:admin
+nelsen:nelsen123:manajer
 budi:budi123:pekerja
-cristo:cristo123:admin
+cristo:cristo123:manajer

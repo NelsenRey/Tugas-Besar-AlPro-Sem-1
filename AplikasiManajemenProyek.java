@@ -73,10 +73,10 @@ public class AplikasiManajemenProyek{
         }
     }
 
-    //===Function Menentukan Status Akun (admin/pekerja)
+    //===Function Menentukan Status Akun (manajer/pekerja)
 
-    static boolean statusAdmin(String usn, String pass) {
-        boolean statusAdmin = false;
+    static boolean statusManajer(String usn, String pass) {
+        boolean statusManajer = false;
         try {
             BufferedReader reader = new BufferedReader(new FileReader("UserData.txt"));
             String baris;
@@ -87,7 +87,7 @@ public class AplikasiManajemenProyek{
                 if(username.equals(usn) && password.equals(pass)) {
                     String statusAkun = data[2];
                     if(statusAkun.equals("admin")) {
-                        statusAdmin = true;
+                        statusManajer = true;
                     }
                 }
             }
@@ -95,12 +95,12 @@ public class AplikasiManajemenProyek{
         } catch (IOException e) {
             System.out.println("(!) Terjadi Error Saat Verifikasi Status Akun!");
         }
-        return statusAdmin;
+        return statusManajer;
     }
 
-    //===Function Dashboard Admin
+    //===Function Dashboard Manajer
 
-    static void dashboardAdmin() {
+    static void dashboardManajer() {
         Scanner input = new Scanner(System.in);
 
         while (true) { 
@@ -111,18 +111,18 @@ public class AplikasiManajemenProyek{
             System.out.println("[4] Hapus Proyek");
             System.out.println("[5] Keluar");
             System.out.print("-> Masukkan Pilihan: ");
-            int pilihanMenuAdmin = input.nextInt();
+            int pilihanMenu = input.nextInt();
 
-            if(pilihanMenuAdmin == 1) {
-
-            } else if(pilihanMenuAdmin == 2) {
+            if(pilihanMenu == 1) {
+                lihatProyek();
+            } else if(pilihanMenu == 2) {
                 tambahProyek();
-            } else if(pilihanMenuAdmin == 3) {
+            } else if(pilihanMenu == 3) {
 
-            } else if(pilihanMenuAdmin == 4) {
+            } else if(pilihanMenu == 4) {
 
-            } else if(pilihanMenuAdmin == 5) {
-                System.exit(pilihanMenuAdmin);
+            } else if(pilihanMenu == 5) {
+                System.exit(pilihanMenu);
                 break;
             } else {
                 System.out.println("(!) Pilihan Tidak Valid!");
@@ -131,13 +131,13 @@ public class AplikasiManajemenProyek{
         input.close();
     }
 
-    //=== Function Lihat Proyek (Admin)
+    //=== Function Lihat Proyek (Manajer)
 
     static void lihatProyek() {
 
     }
 
-    //=== Function Tambah Proyek (Admin)
+    //=== Function Tambah Proyek (Manajer)
 
     static void tambahProyek() {
         Scanner input = new Scanner(System.in);
@@ -201,7 +201,7 @@ public class AplikasiManajemenProyek{
 
         Scanner input = new Scanner(System.in);
         boolean statusLogin = false;
-        boolean statusAdmin = false;
+        boolean statusManajer = false;
 
         //---Onboarding Page (Halaman Pembuka)
 
@@ -240,7 +240,7 @@ public class AplikasiManajemenProyek{
                 System.out.print("-> Masukkan Password: ");
                 String password = input.next();
                 statusLogin = login(username, password);
-                statusAdmin = statusAdmin(username, password);
+                statusManajer = statusManajer(username, password);
                 if(statusLogin){
                     break;
                 }
@@ -249,9 +249,9 @@ public class AplikasiManajemenProyek{
                 String regUsername = input.next();
                 System.out.print("-> Buat Password untuk akun " + regUsername + ": ");
                 String regPassword = input.next();
-                System.out.print("-> Status Akun (admin/pekerja): ");
+                System.out.print("-> Status Akun (manajer/pekerja): ");
                 String statusAkun = input.next();
-                if(statusAkun.equals("admin") || statusAkun.equals("pekerja")){
+                if(statusAkun.equals("manajer") || statusAkun.equals("pekerja")){
                     register(regUsername, regPassword, statusAkun);
                 }
             }else if(pilihanMenu == 3) {
@@ -265,9 +265,9 @@ public class AplikasiManajemenProyek{
             }
         }
         
-        //---Fitur Admin
+        //---Fitur Manajer
 
-        if(statusLogin && statusAdmin) {
+        if(statusLogin && statusManajer) {
             System.out.println("\n");
             System.out.println(asciiColorMerah + "=================================================================================" + asciiColorReset);
             System.out.println(asciiColorHijau + "                 ____            _     _                         _ " + asciiColorReset);
@@ -277,17 +277,17 @@ public class AplikasiManajemenProyek{
             System.out.println(asciiColorHijau + "                |____/ \\__,_|___/_| |_|_.__/ \\___/ \\__,_|_|  \\__,_|" + asciiColorReset);
             System.out.println("                                                                   ");
             System.out.println(asciiColorMerah + "=================================================================================" + asciiColorReset);
-            System.out.println(asciiColorBiru + "                   Selamat Datang di Dashboard Admin " + username + "!" + asciiColorReset);
+            System.out.println(asciiColorBiru + "                  Selamat Datang di Dashboard Manajer " + username + "!" + asciiColorReset);
 
             //---Dashboard Admin
 
-            dashboardAdmin();
+            dashboardManajer();
         }
 
 
         //---Fitur Pekerja
 
-        if(statusLogin && !statusAdmin) {
+        if(statusLogin && !statusManajer) {
             System.out.println("\n");
             System.out.println(asciiColorMerah + "=================================================================================" + asciiColorReset);
             System.out.println(asciiColorHijau + "                 ____            _     _                         _ " + asciiColorReset);
