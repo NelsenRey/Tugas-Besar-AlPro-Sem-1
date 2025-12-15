@@ -3,12 +3,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.FileReader;
 import java.io.BufferedReader;
+import java.time.LocalDate;
 
 public class AplikasiManajemenProyek{
 
-    //===Function Login Akun
+    //===Function Login Akun (param = username from username input, password from password input)
 
-    public static boolean login(String usn, String pass) {
+    static boolean login(String usn, String pass) {
         boolean login = false;
         boolean akunDitemukan = false;
         try {
@@ -16,9 +17,11 @@ public class AplikasiManajemenProyek{
             String baris;
 
             while((baris = reader.readLine()) != null) {
+                //Membaca ":" sebagai pembatas (split)
                 String dataAkun[] = baris.split(":");
 
                 if(dataAkun.length >= 2) {
+                    //Memisahkan format username:password:statusAkun dari UserData.txt menjadi variabel tersendiri untuk username dan password
                     String username = dataAkun[0];
                     String password = dataAkun[1];
                     if(username.equals(usn) && password.equals(pass)){
@@ -43,7 +46,7 @@ public class AplikasiManajemenProyek{
 
     //===Function Register Akun
 
-    public static void register(String usn, String pass, String statAcc) {
+    static void register(String usn, String pass, String statAcc) {
         try {
             boolean usernameDigunakan = false;
             BufferedReader reader = new BufferedReader(new FileReader("UserData.txt"));
@@ -60,8 +63,8 @@ public class AplikasiManajemenProyek{
             if(usernameDigunakan) {
                 System.out.println("(!) Akun Sudah Ada!");
             } else {
-                FileWriter writer = new FileWriter("UserData.txt", true); //append mode agar file tidak dioverwrite tetapi ditambahkan
-                writer.write(usn + ":" + pass + ":" + statAcc + System.lineSeparator()); //agar data yang baru tertulis pada new line, bukan disebelah data lama
+                FileWriter writer = new FileWriter("UserData.txt", true); //Append mode agar file tidak dioverwrite tetapi ditambahkan
+                writer.write(usn + ":" + pass + ":" + statAcc + System.lineSeparator()); //Agar data yang baru tertulis pada new line, bukan disebelah data lama
                 writer.close();
                 System.out.println("(!) Akun Berhasil Dibuat!");
             }
@@ -72,7 +75,7 @@ public class AplikasiManajemenProyek{
 
     //===Function Menentukan Status Akun (admin/pekerja)
 
-    public static boolean statusAdmin(String usn, String pass) {
+    static boolean statusAdmin(String usn, String pass) {
         boolean statusAdmin = false;
         try {
             BufferedReader reader = new BufferedReader(new FileReader("UserData.txt"));
@@ -97,7 +100,94 @@ public class AplikasiManajemenProyek{
 
     //===Function Dashboard Admin
 
+    static void dashboardAdmin() {
+        Scanner input = new Scanner(System.in);
 
+        while (true) { 
+            System.out.println("\n");
+            System.out.println("[1] Lihat Proyek");
+            System.out.println("[2] Tambah Proyek");
+            System.out.println("[3] Edit Proyek");
+            System.out.println("[4] Hapus Proyek");
+            System.out.println("[5] Keluar");
+            System.out.print("-> Masukkan Pilihan: ");
+            int pilihanMenuAdmin = input.nextInt();
+
+            if(pilihanMenuAdmin == 1) {
+
+            } else if(pilihanMenuAdmin == 2) {
+                tambahProyek();
+            } else if(pilihanMenuAdmin == 3) {
+
+            } else if(pilihanMenuAdmin == 4) {
+
+            } else if(pilihanMenuAdmin == 5) {
+                System.exit(pilihanMenuAdmin);
+                break;
+            } else {
+                System.out.println("(!) Pilihan Tidak Valid!");
+            }
+        }
+        input.close();
+    }
+
+    //=== Function Lihat Proyek (Admin)
+
+    static void lihatProyek() {
+
+    }
+
+    //=== Function Tambah Proyek (Admin)
+
+    static void tambahProyek() {
+        Scanner input = new Scanner(System.in);
+
+        System.out.print("-> Masukkan Nama Proyek: ");
+        String namaProyek = input.nextLine();
+        System.out.print("-> Masukkan Total Anggaran Proyek: ");
+        int anggaranProyek = input.nextInt();
+        input.nextLine();
+        System.out.print("-> Masukkan Deadline (Tenggat) Proyek (YYYY-MM-DD): ");
+        String inputDeadlineProyek = input.next();
+        input.nextLine();
+        LocalDate deadlineProyek = LocalDate.parse(inputDeadlineProyek);
+        
+        String pekerjaProyek[] = new String[20];
+        String jobdeskPekerja[] = new String[20];
+        int i = 0;
+        while (true) { 
+            System.out.print("-> Masukkan Pekerja (Masukkan 'Berhenti' Untuk Berhenti): ");
+            pekerjaProyek[i] = input.nextLine();
+            if(pekerjaProyek[i].equals("Berhenti")) {
+                break;
+            }
+            System.out.print("-> Masukkan Jobdesk " + pekerjaProyek[i] + ": ");
+            jobdeskPekerja[i] = input.nextLine();
+            i++;
+        }
+
+        //---Gabungkan Array pekerjaProyek[] dan jobdeskPekerja[] agar mudah dibaca dan diwrite
+
+        String dataPekerja = "";
+        for(int j = 0; j < i; j++) {
+            //---Char - berperan sebagai separator antara nama pekerja dan jobdesknya
+            dataPekerja += pekerjaProyek[j] + "-" + jobdeskPekerja[j];
+            if(j < (i-1)) {
+                //---Char , berperan sebagai separator antara setiap dataPekerja
+                dataPekerja += ",";
+            }
+        }
+
+        try {
+            FileWriter writer = new FileWriter("ProjectData.txt", true);
+            writer.write(namaProyek + ":" + anggaranProyek + ":" + deadlineProyek + ":" + dataPekerja + System.lineSeparator());
+            writer.close();
+            System.out.println("-> Proyek Berhasil Ditambahkan!");
+        } catch (IOException e) {
+            System.out.println("(!) Terjadi Error Saat Penambahan Proyek!");
+        }
+
+    }
 
 
     //===Function Dashboard Pekerja
@@ -134,8 +224,8 @@ public class AplikasiManajemenProyek{
         //Select Menu
 
         String username = "";
-        
-        while(true){
+
+        while(true) {
             System.out.println("\n");
             System.out.println("[1] Login");
             System.out.println("[2] Register");
@@ -144,7 +234,7 @@ public class AplikasiManajemenProyek{
             System.out.println(" ");
             System.out.print("Masukkan Pilihan: ");
             int pilihanMenu = input.nextInt();
-            if(pilihanMenu == 1){
+            if(pilihanMenu == 1) {
                 System.out.print("-> Masukkan Username: ");
                 username = input.next();
                 System.out.print("-> Masukkan Password: ");
@@ -154,7 +244,7 @@ public class AplikasiManajemenProyek{
                 if(statusLogin){
                     break;
                 }
-            }else if(pilihanMenu == 2){
+            }else if(pilihanMenu == 2) {
                 System.out.print("-> Buat Username: ");
                 String regUsername = input.next();
                 System.out.print("-> Buat Password untuk akun " + regUsername + ": ");
@@ -164,20 +254,20 @@ public class AplikasiManajemenProyek{
                 if(statusAkun.equals("admin") || statusAkun.equals("pekerja")){
                     register(regUsername, regPassword, statusAkun);
                 }
-            }else if(pilihanMenu == 3){
+            }else if(pilihanMenu == 3) {
 
-            }else if(pilihanMenu == 4){
+            }else if(pilihanMenu == 4) {
                 System.out.println("-> Aplikasi akan ditutup!");
                 System.exit(0);
                 break;
-            }else{
+            }else {
                 System.out.println("-> Input Tidak Valid!");
             }
         }
         
         //---Fitur Admin
 
-        if(statusLogin && statusAdmin){
+        if(statusLogin && statusAdmin) {
             System.out.println("\n");
             System.out.println(asciiColorMerah + "=================================================================================" + asciiColorReset);
             System.out.println(asciiColorHijau + "                 ____            _     _                         _ " + asciiColorReset);
@@ -190,23 +280,14 @@ public class AplikasiManajemenProyek{
             System.out.println(asciiColorBiru + "                   Selamat Datang di Dashboard Admin " + username + "!" + asciiColorReset);
 
             //---Dashboard Admin
-            
 
-            //---Select Menu Admin Page
-
-            System.out.println("\n");
-            System.out.println("[1] Tambah Proyek");
-            System.out.println("[2] Edit Proyek");
-            System.out.println("[3] Hapus Proyek");
-            System.out.println("[4] Keluar");
-            System.out.print("-> Masukkan Pilihan: ");
-            int pilihanMenuAdmin = input.nextInt();
+            dashboardAdmin();
         }
 
 
         //---Fitur Pekerja
 
-        if(statusLogin && !statusAdmin){
+        if(statusLogin && !statusAdmin) {
             System.out.println("\n");
             System.out.println(asciiColorMerah + "=================================================================================" + asciiColorReset);
             System.out.println(asciiColorHijau + "                 ____            _     _                         _ " + asciiColorReset);
@@ -225,4 +306,3 @@ public class AplikasiManajemenProyek{
         
     }
 }
-
