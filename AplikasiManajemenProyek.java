@@ -123,7 +123,8 @@ public class AplikasiManajemenProyek{
             System.out.println("[2] Tambah Proyek");
             System.out.println("[3] Edit Proyek");
             System.out.println("[4] Hapus Proyek");
-            System.out.println("[5] Keluar");
+            System.out.println("[5] Cari Proyek");
+            System.out.println("[6] Keluar");
             System.out.print(asciiColor(2) + "-> Masukkan Pilihan: " + asciiColor(0));
             int pilihanMenu = input.nextInt();
 
@@ -136,6 +137,8 @@ public class AplikasiManajemenProyek{
             } else if(pilihanMenu == 4) {
 
             } else if(pilihanMenu == 5) {
+                cariProyek();
+            } else if(pilihanMenu == 6) {
                 System.exit(pilihanMenu);
                 break;
             } else {
@@ -169,7 +172,7 @@ public class AplikasiManajemenProyek{
 
         System.out.println(asciiColor(1) + "==================================================================================================================================================" + asciiColor(0));
         System.out.println(asciiColor(3) + "__________________________________________________________________________________________________________________________________________________" + asciiColor(0));
-        System.out.println(asciiColor(3) + "|" + formatTabel("Nama Proyek", 30) + "|" + formatTabel("Anggaran Proyek", 25) + "|" + formatTabel("Deadline Proyek", 25) + "|" + formatTabel("Pekerja", 30) + "|" + formatTabel("Jobdesk", 30) + "|" + asciiColor(0));
+        System.out.println(asciiColor(3) + "|" + formatTabel("Nama Proyek", 30) + "|" + formatTabel("Anggaran Proyek", 25) + "|" + formatTabel("Deadline Proyek", 15) + "|" + formatTabel("Pekerja", 30) + "|" + formatTabel("Jobdesk", 30) + "|" + formatTabel("Prioritas", 10) + "|" + asciiColor(0));
         System.out.println(asciiColor(3) + "__________________________________________________________________________________________________________________________________________________" + asciiColor(0));
         try {
             BufferedReader reader = new BufferedReader(new FileReader("ProjectData.txt"));
@@ -180,17 +183,19 @@ public class AplikasiManajemenProyek{
                 String anggaranProyek = data[1];
                 String deadlineProyek = data[2];
                 String dataPekerja[] = data[3].split(",");
-                
+                String prioritasProyek = data[4];
+
                 for(int i = 0; i < dataPekerja.length; i++) {
                     String detailpekerja[] = dataPekerja[i].split("-");
                     String namaPekerja = detailpekerja[0];
                     String jobdeskPekerja = detailpekerja[1];
                     
-                    System.out.println(asciiColor(3) + "|" + asciiColor(0) + formatTabel(namaProyek, 30) + asciiColor(3) + "|" + asciiColor(0) + formatTabel(anggaranProyek, 25) + asciiColor(3) + "|" + asciiColor(0) + formatTabel(deadlineProyek, 25) + asciiColor(3) + "|" + asciiColor(0) + formatTabel(namaPekerja, 30) + asciiColor(3) + "|" + asciiColor(0) + formatTabel(jobdeskPekerja, 30) + asciiColor(3) + "|" + asciiColor(0));
+                    System.out.println(asciiColor(3) + "|" + asciiColor(0) + formatTabel(namaProyek, 30) + asciiColor(3) + "|" + asciiColor(0) + formatTabel(anggaranProyek, 25) + asciiColor(3) + "|" + asciiColor(0) + formatTabel(deadlineProyek, 15) + asciiColor(3) + "|" + asciiColor(0) + formatTabel(namaPekerja, 30) + asciiColor(3) + "|" + asciiColor(0) + formatTabel(jobdeskPekerja, 30) + asciiColor(3) + "|" + asciiColor(0) + formatTabel(prioritasProyek, 10) + asciiColor(3) + "|" + asciiColor(0));
 
                     namaProyek = ""; //Variabel namaProyek, dll direset menjadi kosong agar tabel kebawah tidak mengulang penulisan namaProyek, dll
                     anggaranProyek = "";
                     deadlineProyek = ""; 
+                    prioritasProyek = "";
                     
                 }
                 System.out.println(asciiColor(3) + "__________________________________________________________________________________________________________________________________________________" + asciiColor(0));
@@ -231,6 +236,19 @@ public class AplikasiManajemenProyek{
             i++;
         }
 
+        System.out.println(asciiColor(3) + "-> Prioritas Proyek" + asciiColor(0));
+        System.out.println("   [1] Tinggi");
+        System.out.println("   [2] Sedang");
+        System.out.println("   [3] Rendah");
+        System.out.print(asciiColor(3) + "-> Masukkan Pilihan Prioritas Proyek" + asciiColor(0));
+        int prioritasProyek = input.nextInt();
+        String teksPrioritas = "";
+        if(prioritasProyek > 3 || prioritasProyek < 1) {
+            System.out.println(asciiColor(1) + "(!) Pilihan Tidak Valid!" + asciiColor(0));
+        } else {
+            teksPrioritas = prioritasProyek == 1 ? "Tinggi": prioritasProyek == 2 ? "Sedang": "Rendah";
+        }
+
         //---Gabungkan Array pekerjaProyek[] dan jobdeskPekerja[] agar mudah dibaca dan diwrite
 
         String dataPekerja = "";
@@ -245,7 +263,7 @@ public class AplikasiManajemenProyek{
 
         try {
             FileWriter writer = new FileWriter("ProjectData.txt", true);
-            writer.write(namaProyek + ":" + anggaranProyek + ":" + deadlineProyek + ":" + dataPekerja + System.lineSeparator());
+            writer.write(namaProyek + ":" + anggaranProyek + ":" + deadlineProyek + ":" + dataPekerja + ":" + teksPrioritas + System.lineSeparator());
             writer.close();
             System.out.println(asciiColor(3) + "-> Proyek Berhasil Ditambahkan!" + asciiColor(0));
         } catch (IOException e) {
@@ -254,10 +272,145 @@ public class AplikasiManajemenProyek{
 
     }
 
+    //===Function Edit Proyek (Manajer)
+
+
+    //===Function Hapus Proyek (Manajer)
+
+
+
+    //===Function Cari Proyek (Manajer & Pekerja)
+    static void cariProyek() {
+        Scanner input = new Scanner(System.in);
+        System.out.println(asciiColor(3) + "-> Cari Proyek Berdasarkan: " + asciiColor(0));
+        System.out.println("   [1] Nama Proyek");
+        System.out.println("   [2] Deadline Proyek");
+        System.out.println("   [3] Nama Pekerja");
+        System.out.println("   [4] Jobdesk Pekerja");
+        System.out.println("   [5] Prioritas Proyek");
+        System.out.print(asciiColor(2) + "-> Masukkan Pilihan: " + asciiColor(0));
+        int pilihanSearch = input.nextInt();
+        input.nextLine();
+
+        boolean pencarian = false;
+        String keywordPencarian = "";
+        if(pilihanSearch == 1) {
+            System.out.print(asciiColor(2) + "-> Masukkan Nama Proyek Yang Dicari: " + asciiColor(0));
+            keywordPencarian = input.nextLine();
+            pencarian = true;
+        }else if(pilihanSearch == 2) {
+            System.out.print(asciiColor(2) + "-> Masukkan Deadline Dari Proyek Yang Dicari: " + asciiColor(0));
+            keywordPencarian = input.nextLine();
+            pencarian = true;
+        }else if(pilihanSearch == 3) {
+            System.out.print(asciiColor(2) + "-> Masukkan Nama Pekerja Yang Dicari: " + asciiColor(0));
+            keywordPencarian = input.nextLine();
+            pencarian = true;
+        }else if(pilihanSearch == 4) {
+            System.out.print(asciiColor(2) + "-> Masukkan Jobdesk Dari Proyek Yang Dicari: " + asciiColor(0));
+            keywordPencarian = input.nextLine();
+            pencarian = true;
+        }else if(pilihanSearch == 5) {
+            System.out.println("-> Prioritas Proyek");
+            System.out.println("   [1] Tinggi");
+            System.out.println("   [2] Sedang");
+            System.out.println("   [3] Rendah");
+            System.out.print(asciiColor(2) + "-> Masukkan Prioritas Proyek Yang Dicari: " + asciiColor(0));
+            int prioritasProyek = input.nextInt();
+            if(prioritasProyek > 3 || prioritasProyek < 1) {
+                System.out.println(asciiColor(1) + "(!) Pilihan Tidak Valid!" + asciiColor(0));
+            } else {
+                keywordPencarian = prioritasProyek == 1 ? "Tinggi": prioritasProyek == 2 ? "Sedang": "Rendah";
+                pencarian = true;
+            }
+        }else {
+            System.out.println(asciiColor(1) + "(!) Pilihan Tidak Valid!" + asciiColor(0));
+        }
+
+        boolean ditemukan = false;
+
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("ProjectData.txt"));
+            String baris;
+
+            if(pencarian) {
+                while((baris = reader.readLine()) != null) {
+                    String data[] = baris.split(":");
+
+                    String namaProyek = data[0];
+                    String anggaranProyek = data[1];
+                    String deadlineProyek = data[2];
+                    String dataPekerja[] = data[3].split(",");
+                    String prioritasProyek = data[4];
+
+                    boolean proyekDitemukan = namaProyek.contains(keywordPencarian) || deadlineProyek.contains(keywordPencarian) || prioritasProyek.contains(keywordPencarian);
+                    
+                    for(int i = 0; i < dataPekerja.length; i++) {
+                        String detailPekerja[] = dataPekerja[i].split("-");
+                        String namaPekerja = detailPekerja[0];
+                        String jobdeskPekerja = detailPekerja[1];
+
+                        boolean pekerjaDitemukan = namaPekerja.contains(keywordPencarian) || jobdeskPekerja.contains(keywordPencarian);
+
+                        if(proyekDitemukan || pekerjaDitemukan) {
+
+                            //Agar header format tabel hanya diprint satu kali
+                            if(!ditemukan) {
+                                System.out.println(asciiColor(3) + "__________________________________________________________________________________________________________________________________________________" + asciiColor(0));
+                                System.out.println(asciiColor(3) + "|" + formatTabel("Nama Proyek", 30) + "|" + formatTabel("Anggaran Proyek", 25) + "|" + formatTabel("Deadline Proyek", 15) + "|" + formatTabel("Pekerja", 30) + "|" + formatTabel("Jobdesk", 30) + "|" + formatTabel("Prioritas", 10) + "|" + asciiColor(0));
+                                System.out.println(asciiColor(3) + "__________________________________________________________________________________________________________________________________________________" + asciiColor(0));
+                            }
+
+                            System.out.println(asciiColor(3) + "|" + asciiColor(0) + formatTabel(namaProyek, 30) + asciiColor(3) + "|" + asciiColor(0) + formatTabel(anggaranProyek, 25) + asciiColor(3) + "|" + asciiColor(0) + formatTabel(deadlineProyek, 15) + asciiColor(3) + "|" + asciiColor(0) + formatTabel(namaPekerja, 30) + asciiColor(3) + "|" + asciiColor(0) + formatTabel(jobdeskPekerja, 30) + asciiColor(3) + "|" + asciiColor(0) + formatTabel(prioritasProyek, 10) + asciiColor(3) + "|" + asciiColor(0));
+                            
+                            namaProyek = ""; //Variabel namaProyek, dll direset menjadi kosong agar tabel kebawah tidak mengulang penulisan namaProyek, dll
+                            anggaranProyek = "";
+                            deadlineProyek = ""; 
+                            prioritasProyek = "";
+
+                            ditemukan = true;
+                        } 
+                    }
+                    System.out.println(asciiColor(3) + "__________________________________________________________________________________________________________________________________________________" + asciiColor(0));
+                }
+
+                if(!ditemukan) {
+                    System.out.println(asciiColor(1) + "(!) Proyek Tidak Ditemukan!" + asciiColor(0));
+                }
+            } 
+        } catch (IOException e) {
+            System.out.println(asciiColor(1) + "(!) Terjadi Kesalahan Saat Mencari Proyek!" + asciiColor(0));
+        }
+    }
+
 
     //===Function Dashboard Pekerja
     static void dashboardPekerja() {
-        
+        Scanner input = new Scanner(System.in);
+
+        while (true) { 
+            System.out.println("\n");
+            System.out.println("[1] Lihat Proyek");
+            System.out.println("[2] Cari Proyek");
+            System.out.println("[3] Edit Jobdesk");
+            System.out.println("[4] Keluar");
+            System.out.print(asciiColor(2) + "-> Masukkan Pilihan: " + asciiColor(0));
+            int pilihanMenu = input.nextInt();
+
+            if(pilihanMenu == 1) {
+                lihatProyek();
+            } else if(pilihanMenu == 2) {
+                cariProyek();
+            } else if(pilihanMenu == 3) {
+
+            } else if(pilihanMenu == 4) {
+                System.exit(pilihanMenu);
+                break;
+            } else {
+                System.out.println(asciiColor(1) + "(!) Pilihan Tidak Valid!" + asciiColor(0));
+            }
+        }
+        input.close();
     }
 
 
@@ -272,17 +425,17 @@ public class AplikasiManajemenProyek{
 
         //---Onboarding Page (Halaman Pembuka)
 
-        System.out.println(asciiColor(1) + "=================================================================================" + asciiColor(0));
-        System.out.println(asciiColor(2) + "  ____            _           _         __  __                                   " + asciiColor(0));
-        System.out.println(asciiColor(2) + " |  _ \\ _ __ ___ (_) ___  ___| |_      |  \\/  | __ _ _ __   __ _  __ _  ___ _ __ " + asciiColor(0));
-        System.out.println(asciiColor(2) + " | |_) | '__/ _ \\| |/ _ \\/ __| __|     | |\\/| |/ _` | '_ \\ / _` |/ _` |/ _ \\ '__|" + asciiColor(0));
-        System.out.println(asciiColor(2) + " |  __/| | | (_) | |  __/ (__| |_      | |  | | (_| | | | | (_| | (_| |  __/ |   " + asciiColor(0));
-        System.out.println(asciiColor(2) + " |_|   |_|  \\___// |\\___|\\___|\\__|     |_|  |_|\\__,_|_| |_|\\__,_|\\__, |\\___|_|   " + asciiColor(0));
-        System.out.println(asciiColor(2) + "               |__/                                              |___/           " + asciiColor(0));
-        System.out.println(asciiColor(1) + "=================================================================================" + asciiColor(0));
+        System.out.println(asciiColor(1) + "==================================================================================================================================================" + asciiColor(0));
+        System.out.println(asciiColor(2) + "                                    ____            _           _         __  __                                   " + asciiColor(0));
+        System.out.println(asciiColor(2) + "                                   |  _ \\ _ __ ___ (_) ___  ___| |_      |  \\/  | __ _ _ __   __ _  __ _  ___ _ __ " + asciiColor(0));
+        System.out.println(asciiColor(2) + "                                   | |_) | '__/ _ \\| |/ _ \\/ __| __|     | |\\/| |/ _` | '_ \\ / _` |/ _` |/ _ \\ '__|" + asciiColor(0));
+        System.out.println(asciiColor(2) + "                                   |  __/| | | (_) | |  __/ (__| |_      | |  | | (_| | | | | (_| | (_| |  __/ |   " + asciiColor(0));
+        System.out.println(asciiColor(2) + "                                   |_|   |_|  \\___// |\\___|\\___|\\__|     |_|  |_|\\__,_|_| |_|\\__,_|\\__, |\\___|_|   " + asciiColor(0));
+        System.out.println(asciiColor(2) + "                                                 |__/                                              |___/           " + asciiColor(0));
+        System.out.println(asciiColor(1) + "==================================================================================================================================================" + asciiColor(0));
 
 
-        System.out.println(asciiColor(3) + "                   Selamat Datang di Aplikasi Manajemen Proyek!" + asciiColor(0));
+        System.out.println(asciiColor(3) + "                                                  Selamat Datang di Aplikasi Manajemen Proyek!" + asciiColor(0));
 
         //Select Menu
 
@@ -332,15 +485,15 @@ public class AplikasiManajemenProyek{
 
         if(statusLogin && statusManajer) {
             System.out.println("\n");
-            System.out.println(asciiColor(1) + "=================================================================================" + asciiColor(0));
-            System.out.println(asciiColor(2) + "                 ____            _     _                         _ " + asciiColor(0));
-            System.out.println(asciiColor(2) + "                |  _ \\  __ _ ___| |__ | |__   ___   __ _ _ __ __| |" + asciiColor(0));
-            System.out.println(asciiColor(2) + "                | | | |/ _` / __| '_ \\| '_ \\ / _ \\ / _` | '__/ _` |" + asciiColor(0));
-            System.out.println(asciiColor(2) + "                | |_| | (_| \\__ \\ | | | |_) | (_) | (_| | | | (_| |" + asciiColor(0));
-            System.out.println(asciiColor(2) + "                |____/ \\__,_|___/_| |_|_.__/ \\___/ \\__,_|_|  \\__,_|" + asciiColor(0));
+            System.out.println(asciiColor(1) + "==================================================================================================================================================" + asciiColor(0));
+            System.out.println(asciiColor(2) + "                                                 ____            _     _                         _ " + asciiColor(0));
+            System.out.println(asciiColor(2) + "                                                |  _ \\  __ _ ___| |__ | |__   ___   __ _ _ __ __| |" + asciiColor(0));
+            System.out.println(asciiColor(2) + "                                                | | | |/ _` / __| '_ \\| '_ \\ / _ \\ / _` | '__/ _` |" + asciiColor(0));
+            System.out.println(asciiColor(2) + "                                                | |_| | (_| \\__ \\ | | | |_) | (_) | (_| | | | (_| |" + asciiColor(0));
+            System.out.println(asciiColor(2) + "                                                |____/ \\__,_|___/_| |_|_.__/ \\___/ \\__,_|_|  \\__,_|" + asciiColor(0));
             System.out.println("                                                                   ");
-            System.out.println(asciiColor(1) + "=================================================================================" + asciiColor(0));
-            System.out.println(asciiColor(3) + "                  Selamat Datang di Dashboard Manajer " + username + "!" + asciiColor(0));
+            System.out.println(asciiColor(1) + "==================================================================================================================================================" + asciiColor(0));
+            System.out.println(asciiColor(3) + "                                                    Selamat Datang di Dashboard Manajer " + username + "!" + asciiColor(0));
 
             //---Dashboard Admin
 
@@ -352,20 +505,18 @@ public class AplikasiManajemenProyek{
 
         if(statusLogin && !statusManajer) {
             System.out.println("\n");
-            System.out.println(asciiColor(1) + "=================================================================================" + asciiColor(0));
-            System.out.println(asciiColor(2) + "                 ____            _     _                         _ " + asciiColor(0));
-            System.out.println(asciiColor(2) + "                |  _ \\  __ _ ___| |__ | |__   ___   __ _ _ __ __| |" + asciiColor(0));
-            System.out.println(asciiColor(2) + "                | | | |/ _` / __| '_ \\| '_ \\ / _ \\ / _` | '__/ _` |" + asciiColor(0));
-            System.out.println(asciiColor(2) + "                | |_| | (_| \\__ \\ | | | |_) | (_) | (_| | | | (_| |" + asciiColor(0));
-            System.out.println(asciiColor(2) + "                |____/ \\__,_|___/_| |_|_.__/ \\___/ \\__,_|_|  \\__,_|" + asciiColor(0));
+            System.out.println(asciiColor(1) + "==================================================================================================================================================" + asciiColor(0));
+            System.out.println(asciiColor(2) + "                                                 ____            _     _                         _ " + asciiColor(0));
+            System.out.println(asciiColor(2) + "                                                |  _ \\  __ _ ___| |__ | |__   ___   __ _ _ __ __| |" + asciiColor(0));
+            System.out.println(asciiColor(2) + "                                                | | | |/ _` / __| '_ \\| '_ \\ / _ \\ / _` | '__/ _` |" + asciiColor(0));
+            System.out.println(asciiColor(2) + "                                                | |_| | (_| \\__ \\ | | | |_) | (_) | (_| | | | (_| |" + asciiColor(0));
+            System.out.println(asciiColor(2) + "                                                |____/ \\__,_|___/_| |_|_.__/ \\___/ \\__,_|_|  \\__,_|" + asciiColor(0));
             System.out.println("                                                                   ");
-            System.out.println(asciiColor(1) + "=================================================================================" + asciiColor(0));
-            System.out.println(asciiColor(3) + "                   Selamat Datang di Dashboard Pekerja " + username + "!" + asciiColor(0));
+            System.out.println(asciiColor(1) + "==================================================================================================================================================" + asciiColor(0));
+            System.out.println(asciiColor(3) + "                                                    Selamat Datang di Dashboard Pekerja " + username + "!" + asciiColor(0));
 
             //---Dashboard Pekerja
-
-            //---Select Menu Pekerja
+            dashboardPekerja();
         }
-        
     }
 }
