@@ -1,3 +1,2 @@
-Bangun Rumah:1000000:2026-12-24:Budi-Beli Semen-Sudah,Anton-Ngaduk Semen-Belum,Rudy-Bangun Atap-Belum:Sedang
-Ibu Kota Nusantara:500000000:2045-12-12:Chou-Bangun Istana-Belum,Harith-Siapin Bahan-Belum,Selena-Memantau Proyek-Belum,Zilong-Membangun Jalan-Belum,Grock-Membangun Taman-Belum:Tinggi
-Kebun Sawit:3000000:2045-10-08:Budi-Beli Bibit-Belum,Sutarji-Tanam Sawit-Belum,Udin-Makan Gorengan-Belum:Tinggi
+Bedah Rumah:3000000:2026-08-17:Budi-Membeli Semen-Belum,Anton-Mengaduk Semen-Belum,Sutarji-Membangun Atap-Belum,Rizki-Mengecat Tembok-Belum:Sedang
+Ibu Kota Nusantara:450000000:2045-01-01:Chou-Membangun Istana Negara-Belum,Selena-Menanam Pohon-Belum,Harith-Membangun Taman-Belum,Zilong-Membangun Jalan-Belum:Tinggi
