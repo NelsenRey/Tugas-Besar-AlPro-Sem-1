@@ -1,15 +1,13 @@
-import java.util.Scanner;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.FileReader;
-import java.io.BufferedReader;
-import java.lang.invoke.WrongMethodTypeException;
-import java.time.LocalDate;
+import java.util.Scanner; //Input
+import java.io.FileWriter; //Menulis file di ProjectData.txt dan UserData.txt
+import java.io.IOException; //Handling error di file
+import java.io.FileReader; //Membaca file di ProjectData.txt dan UserData.txt
+import java.io.BufferedReader; //FileReader versi lebih cepat
+import java.time.LocalDate; //Untuk deadline atau tenggat proyek
 
 public class AplikasiManajemenProyek{
 
-
-    //===Function ASCII Color (param = int untuk menentukan warna)
+    //===Function ASCII Color - Memberikan Warna UI CLI (param = int pilihanWarna from developeer) 
     static String asciiColor(int pilihanWarna) {
         if(pilihanWarna == 0) {
             return "\u001B[0m"; //Reset (ditambahkan diakhir)
@@ -22,12 +20,13 @@ public class AplikasiManajemenProyek{
         }
     }
 
-    //===Function Login Akun (param = username from username input, password from password input)
+    //===Function Login Akun (param = username from user input, password from user input)
 
     static boolean login(String usn, String pass) {
         boolean login = false;
         boolean akunDitemukan = false;
         try {
+            //Inisialisasi variabel dan library
             BufferedReader reader = new BufferedReader(new FileReader("UserData.txt"));
             String baris;
 
@@ -46,9 +45,11 @@ public class AplikasiManajemenProyek{
                 }
             }            
         } catch (IOException e) {
+            //Handling error dari library
             System.out.println(asciiColor(1) + "(!) Terjadi Error Pada Sistem!" + asciiColor(0));
         }
 
+        //Memberikan notifikasi berhasil/tidak
         if(akunDitemukan) {
             login = true;
             System.out.println(asciiColor(3) + "-> Login Berhasil!" + asciiColor(0));
@@ -59,13 +60,15 @@ public class AplikasiManajemenProyek{
         return login;
     }
 
-    //===Function Register Akun
+    //===Function Register Akun (param = usn from user input, pass from user input, statAcc from UserData.txt)
 
     static void register(String usn, String pass, String statAcc) {
         try {
+            //Inisialisasi variabel dan library
             boolean usernameDigunakan = false;
             BufferedReader reader = new BufferedReader(new FileReader("UserData.txt"));
             String baris;
+            //Mengumpulkan data dari database
             while((baris = reader.readLine()) != null) {
                 String dataAkun[] = baris.split(":");
                 String username = dataAkun[0];
@@ -84,11 +87,12 @@ public class AplikasiManajemenProyek{
                 System.out.println(asciiColor(3) + "(!) Akun Berhasil Dibuat!" + asciiColor(0));
             }
         } catch (IOException e) {
+            //Handling error
             System.out.println(asciiColor(1) + "(!) Terjadi Kesalahan Pada Sistem!" + asciiColor(0));
         }
     }
 
-    //===Function Menentukan Status Akun (manajer/pekerja)
+    //===Function Menentukan Status Akun - Menentukan Akun Berstatus Manajer/Pekerja (param usn from user input, pass from user input)
 
     static boolean statusManajer(String usn, String pass) {
         boolean statusManajer = false;
@@ -96,7 +100,9 @@ public class AplikasiManajemenProyek{
             BufferedReader reader = new BufferedReader(new FileReader("UserData.txt"));
             String baris;
             while((baris = reader.readLine()) != null) {
+                //Memisah baris yang terbaca menjadi sebuah array
                 String data[] = baris.split(":");
+                //Mengambil String username dan password dari baris yang sudah dipecah menjadi array
                 String username = data[0];
                 String password = data[1];
                 if(username.equals(usn) && password.equals(pass)) {
@@ -113,12 +119,15 @@ public class AplikasiManajemenProyek{
         return statusManajer;
     }
 
-    //===Function Dashboard Manajer
+    //===Function Dashboard Manajer - Masuk Ke Dashboard dan Unlock Fitur Manajer
 
     static void dashboardManajer() {
+        //Inisialisasi
         Scanner input = new Scanner(System.in);
+        //Menampilkan ringkasan proyek
         ringkasanProyek();
         while (true) { 
+            //Select menu
             System.out.println("\n");
             System.out.println("[1] Lihat Proyek");
             System.out.println("[2] Tambah Proyek");
@@ -129,6 +138,7 @@ public class AplikasiManajemenProyek{
             System.out.print(asciiColor(2) + "-> Masukkan Pilihan: " + asciiColor(0));
             int pilihanMenu = input.nextInt();
 
+            //Mengarahkan ke function-function yang sudah dibuat
             if(pilihanMenu == 1) {
                 lihatProyek();
             } else if(pilihanMenu == 2) {
@@ -149,9 +159,10 @@ public class AplikasiManajemenProyek{
         input.close();
     }
 
-    //=== Function Ringkasan Proyek
+    //=== Function Ringkasan Proyek - Menampilkan Ringkasan Proyek dari Database
     
     static void ringkasanProyek() {
+        //Inisialisasi variabel dan library
         int totalProyek = 0;
         int prioritasTinggi = 0;
         int prioritasSedang = 0;
@@ -164,6 +175,7 @@ public class AplikasiManajemenProyek{
             BufferedReader reader = new BufferedReader(new FileReader("ProjectData.txt"));
             String baris;
 
+            //Mengumpulkan dan memisahkan data setiap atribut proyek dalam ProjectData.txt
             while((baris = reader.readLine()) != null) {
                 //Dilihat dari jumlah baris pada ProjectData.txt
                 totalProyek++;
@@ -192,18 +204,19 @@ public class AplikasiManajemenProyek{
                 }
             }
             reader.close();
+
+            //Hasil dioutputkan
             System.out.println("\n");
-            System.out.println(asciiColor(2) + "                                                         PROYEK YANG SEDANG BERLANGSUNG");
-            System.out.println("\n");
-            System.out.println(asciiColor(3) +"                                                             Total Proyek       : " + asciiColor(2) + totalProyek + asciiColor(0));
-            System.out.println(asciiColor(3) + "                                                             Prioritas Tinggi   : " + asciiColor(2) + prioritasTinggi + asciiColor(0));
-            System.out.println(asciiColor(3) + "                                                             Prioritas Sedang   : " + asciiColor(2) + prioritasSedang + asciiColor(0));
-            System.out.println(asciiColor(3) + "                                                             Prioritas Rendah   : " + asciiColor(2) + prioritasRendah + asciiColor(0));
-            System.out.println("\n");
-            System.out.println(asciiColor(3) + "                                                             Total Pekerja      : " + asciiColor(2) + totalPekerja + asciiColor(0));
-            System.out.println(asciiColor(3) + "                                                             Jobdesk Selesai    : " + asciiColor(2) + jobdeskSudah + asciiColor(0));
-            System.out.println(asciiColor(3) + "                                                             Jobdesk Belum      : " + asciiColor(2) + jobdeskBelum + asciiColor(0));
+            System.out.println(asciiColor(2) + "(!) PROYEK YANG SEDANG BERLANGSUNG");
+            System.out.println(asciiColor(3) + "|Total Proyek       : " + asciiColor(1) + totalProyek + asciiColor(0));
+            System.out.println(asciiColor(3) + "|Prioritas Tinggi   : " + asciiColor(1) + prioritasTinggi + asciiColor(0));
+            System.out.println(asciiColor(3) + "|Prioritas Sedang   : " + asciiColor(1) + prioritasSedang + asciiColor(0));
+            System.out.println(asciiColor(3) + "|Prioritas Rendah   : " + asciiColor(1) + prioritasRendah + asciiColor(0));
+            System.out.println(asciiColor(3) + "|Total Pekerja      : " + asciiColor(1) + totalPekerja + asciiColor(0));
+            System.out.println(asciiColor(3) + "|Jobdesk Selesai    : " + asciiColor(1) + jobdeskSudah + asciiColor(0));
+            System.out.println(asciiColor(3) + "|Jobdesk Belum      : " + asciiColor(1) + jobdeskBelum + asciiColor(0));
         } catch (IOException e) {
+            //Handling library error
             System.out.println(asciiColor(1) + "(!) Terjadi Kesalahan Pada Sistem!" + asciiColor(0));
         }
     }
@@ -217,7 +230,7 @@ public class AplikasiManajemenProyek{
         return String.format("%-" + lebarKolom + "s", text); //Menghasilkan format untuk penulisan string yang dimasukkan ke dalam function, %- ditambahkan agar teks rata kiri, lebarKolom + s menandakan maksimal karakter dalam kolom tersebut
     }
 
-    //=== Function Lihat Proyek (Manajer & Pekerja)
+    //=== Function Lihat Proyek - Menampilkan List Proyek dari Database
 
     static void lihatProyek() {
         System.out.println(asciiColor(1) + "==================================================================================================================================================" + asciiColor(0)); //146 char
@@ -232,12 +245,16 @@ public class AplikasiManajemenProyek{
 
         System.out.println(asciiColor(1) + "==================================================================================================================================================" + asciiColor(0));
         System.out.println(asciiColor(3) + "__________________________________________________________________________________________________________________________________________________" + asciiColor(0));
+        //Header tabel proyek
         System.out.println(asciiColor(3) + "|" + formatTabel("Nama Proyek", 30) + "|" + formatTabel("Anggaran Proyek", 25) + "|" + formatTabel("Deadline", 10) + "|" + formatTabel("Pekerja", 25) + "|" + formatTabel("Jobdesk", 30) + "|" + formatTabel("Status", 10) + "|" + formatTabel("Prioritas", 10) + "|" + asciiColor(0));
         System.out.println(asciiColor(3) + "__________________________________________________________________________________________________________________________________________________" + asciiColor(0));
         try {
+            //Inisialisasi variabel dan library
             BufferedReader reader = new BufferedReader(new FileReader("ProjectData.txt"));
             String baris;
+            //Mengumpulkan data dari ProjectData.txt
             while((baris = reader.readLine()) != null) {
+                //Memecah baris menjadi atribut-atribut proyek
                 String data[] = baris.split(":");
                 String namaProyek = data[0];
                 String anggaranProyek = data[1];
@@ -246,11 +263,13 @@ public class AplikasiManajemenProyek{
                 String prioritasProyek = data[4];
 
                 for(int i = 0; i < dataPekerja.length; i++) {
+                    //Memecah data pekerja menjadi lebih detail (nama, jobdesk, status jobdesk)
                     String detailpekerja[] = dataPekerja[i].split("-");
                     String namaPekerja = detailpekerja[0];
                     String jobdeskPekerja = detailpekerja[1];
                     String statusJobdesk = detailpekerja[2];
                     
+                    //Output hasil proyek dari database
                     if(statusJobdesk.equals("Belum")) {
                         System.out.println(asciiColor(3) + "|" + asciiColor(0) + formatTabel(namaProyek, 30) + asciiColor(3) + "|" + asciiColor(0) + formatTabel(anggaranProyek, 25) + asciiColor(3) + "|" + asciiColor(0) + formatTabel(deadlineProyek, 10) + asciiColor(3) + "|" + asciiColor(0) + formatTabel(namaPekerja, 25) + asciiColor(3) + "|" + asciiColor(0) + asciiColor(1) + formatTabel(jobdeskPekerja, 30) + asciiColor(0) + asciiColor(3) + "|" + asciiColor(0) + asciiColor(1) + formatTabel(statusJobdesk, 10) + asciiColor(0) + asciiColor(3) + "|" + asciiColor(0) + formatTabel(prioritasProyek, 10) + asciiColor(3) + "|" + asciiColor(0));
                     } else {
@@ -266,15 +285,17 @@ public class AplikasiManajemenProyek{
                 System.out.println(asciiColor(3) + "__________________________________________________________________________________________________________________________________________________" + asciiColor(0));
             }
         } catch (IOException e) {
+            //Handling error library
             System.out.println(asciiColor(1) + "(!) Terjadi Kesalahan Pada Sistem!" + asciiColor(0));
         }
     }
 
-    //=== Function Tambah Proyek (Manajer)
+    //=== Function Tambah Proyek - Fitur Khusus Manager Untuk Menambah Proyek Baru ke Database (ProjectData.txt)
 
     static void tambahProyek() {
         Scanner input = new Scanner(System.in);
 
+        //Mengumpulkan data untuk proyek baru
         System.out.print(asciiColor(2) + "-> Masukkan Nama Proyek: " + asciiColor(0));
         String namaProyek = input.nextLine();
         System.out.print(asciiColor(2) + "-> Masukkan Total Anggaran Proyek: " + asciiColor(0));
@@ -288,6 +309,8 @@ public class AplikasiManajemenProyek{
         String pekerjaProyek[] = new String[20];
         String jobdeskPekerja[] = new String[20];
         int i = 0;
+        
+        //Looping untuk input data pekerja (pekerja proyek umumnya lebih dari satu)
         while (true) { 
             System.out.print(asciiColor(2) + "-> Masukkan Pekerja (Masukkan 'Berhenti' Untuk Berhenti): " + asciiColor(0));
             pekerjaProyek[i] = input.nextLine();
@@ -312,35 +335,39 @@ public class AplikasiManajemenProyek{
             teksPrioritas = prioritasProyek == 1 ? "Tinggi": prioritasProyek == 2 ? "Sedang": "Rendah";
         }
 
-        //---Gabungkan Array pekerjaProyek[] dan jobdeskPekerja[] agar mudah dibaca dan diwrite
+        //Gabungkan Array pekerjaProyek[] dan jobdeskPekerja[] agar mudah dibaca dan diwrite
 
         String dataPekerja = "";
         for(int j = 0; j < i; j++) {
-            //---Char - berperan sebagai separator antara nama pekerja dan jobdesknya
+            //Char - berperan sebagai separator antara nama pekerja dan jobdesknya
             dataPekerja += pekerjaProyek[j] + "-" + jobdeskPekerja[j] + "-Belum";
             if(j < (i-1)) {
-                //---Char , berperan sebagai separator antara setiap dataPekerja
+                //Char , berperan sebagai separator antara setiap dataPekerja
                 dataPekerja += ",";
             }
         }
 
         try {
+            //Menuliskan data-data yang sudah dikumpulkan dari input ke file ProjectData.txt
             FileWriter writer = new FileWriter("ProjectData.txt", true);
             writer.write(namaProyek + ":" + anggaranProyek + ":" + deadlineProyek + ":" + dataPekerja + ":" + teksPrioritas + System.lineSeparator());
             writer.close();
+            //Menginformasikan data berhasil ditambahkan
             System.out.println(asciiColor(3) + "-> Proyek Berhasil Ditambahkan!" + asciiColor(0));
         } catch (IOException e) {
+            //Handling error library
             System.out.println(asciiColor(1) + "(!) Terjadi Error Saat Penambahan Proyek!" + asciiColor(0));
         }
 
     }
 
-    //===Function Edit Proyek (Manajer)
+    //===Function Edit Proyek - Fitur Khusus Manajer Untuk Mengubah Data Proyek Yang Sudah Ada 
 
     static void editProyek() {
         Scanner input = new Scanner(System.in);
         lihatProyek(); //Menampilkan tabel daftar proyek yang berlangsung
 
+        //Keyword hanya dari nama proyek
         System.out.print(asciiColor(2) + "-> Masukkan Nama Proyek Yang Ingin Diedit: " + asciiColor(0));
         String proyekDiedit = input.nextLine().trim();
 
@@ -348,6 +375,7 @@ public class AplikasiManajemenProyek{
         boolean ditemukan = false;
 
         try {
+            //Inisialisasi variabel dan library
             BufferedReader reader = new BufferedReader(new FileReader("ProjectData.txt"));
             String baris;
 
@@ -374,6 +402,8 @@ public class AplikasiManajemenProyek{
                     System.out.print(asciiColor(2) + "-> Masukkan Pilihan: " + asciiColor(0));
                     int pilihan = input.nextInt();
                     input.nextLine();
+
+                    //Mengumpulkan data untuk atribut yang ingin diubah
                     switch(pilihan) {
                         case 1:
                             System.out.print(asciiColor(2) + "-> Nama Proyek Baru: " + asciiColor(0));
@@ -433,11 +463,12 @@ public class AplikasiManajemenProyek{
                             return;
                     }
                 }
-
+                //Mengumpulkan data yang diubah ke dalam bentuk variabel baru
                 hasilEdit += namaProyek + ":" + anggaranProyek + ":" + deadlineProyek + ":" + dataPekerja + ":" + prioritasProyek + System.lineSeparator();
             }
             reader.close();
 
+            //Memasukkan hasil perubahan ke ProjectData.txt
             if(ditemukan) {
                 FileWriter writer = new FileWriter("ProjectData.txt");
                 writer.write(hasilEdit);
@@ -451,7 +482,7 @@ public class AplikasiManajemenProyek{
         }
     }
 
-    //===Function Hapus Proyek (Manajer)
+    //===Function Hapus Proyek - Fitur Khusus Manajer Untuk Menghapus Proyek
 
     static void hapusProyek() {
         Scanner input = new Scanner(System.in);
@@ -465,13 +496,15 @@ public class AplikasiManajemenProyek{
         boolean ditemukan = false;
 
         try {
+            //Inisialisasi variabel dan library
             BufferedReader reader = new BufferedReader(new FileReader("ProjectData.txt"));
             String baris; 
-
+            //Membaca seluruh data di ProjectData.txt
             while((baris = reader.readLine()) != null) {
                 String data[] = baris.split(":");
                 String namaProyek = data[0];
 
+                //Apabila nama proyek yang ingin dihapus ditemukan, boolean ditemukan = true
                 if(namaProyek.equalsIgnoreCase(proyekDihapus)) {
                     ditemukan = true;
                     //Proyek yang dihapus akan diskip
@@ -483,6 +516,7 @@ public class AplikasiManajemenProyek{
 
             reader.close();
 
+            //Menulis ulang ProjectData.txt tanpa menuliskan proyek yang dihapus
             if(ditemukan) {
                 FileWriter writer = new FileWriter("ProjectData.txt");
                 writer.write(proyekTidakDihapus);
@@ -496,9 +530,10 @@ public class AplikasiManajemenProyek{
         }
     }
 
-    //===Function Cari Proyek (Manajer & Pekerja)
+    //===Function Cari Proyek - Fitur Untuk Mencari Proyek Yang Diinginkan
 
     static void cariProyek() {
+        //Select menu mencari proyek berdasarkan atribut apa
         Scanner input = new Scanner(System.in);
         System.out.println(asciiColor(3) + "-> Cari Proyek Berdasarkan: " + asciiColor(0));
         System.out.println("   [1] Nama Proyek");
@@ -510,6 +545,7 @@ public class AplikasiManajemenProyek{
         int pilihanSearch = input.nextInt();
         input.nextLine();
 
+        //Mengumpulkan data atribut dari proyek yang dicari
         boolean pencarian = false;
         String keywordPencarian = "";
         if(pilihanSearch == 1) {
@@ -548,6 +584,7 @@ public class AplikasiManajemenProyek{
         boolean ditemukan = false;
 
         try {
+            //Inisialisasi variabel dan library
             BufferedReader reader = new BufferedReader(new FileReader("ProjectData.txt"));
             String baris;
 
@@ -556,23 +593,27 @@ public class AplikasiManajemenProyek{
             boolean proyekPertama = true;
 
             if(pencarian) {
+                //Membaca seluruh data di ProjectData.txt
                 while((baris = reader.readLine()) != null) {
                     String data[] = baris.split(":");
 
+                    //Memisahkan atribut setiap proyek
                     String namaProyek = data[0];
                     String anggaranProyek = data[1];
                     String deadlineProyek = data[2];
                     String dataPekerja[] = data[3].split(",");
                     String prioritasProyek = data[4];
 
+                    //Jika atribut sesuai dengan keyword, maka proyek ditemukan
                     proyekDitemukan = namaProyek.contains(keywordPencarian) || deadlineProyek.contains(keywordPencarian) || prioritasProyek.contains(keywordPencarian);
                     pekerjaDitemukan = false;
-                    
+
+                    //Memisah dataPekerja[] menjadi detailPekerja[]
                     for(int i = 0; i < dataPekerja.length; i++) {
                         String detailPekerja[] = dataPekerja[i].split("-");
                         String namaPekerja = detailPekerja[0];
                         String jobdeskPekerja = detailPekerja[1];
-
+                        //Jika atribut sesuai dengan keyword, maka proyek ditemukan
                         if(namaPekerja.contains(keywordPencarian) || jobdeskPekerja.contains(keywordPencarian)) {
                             pekerjaDitemukan = true;
                             break;
@@ -618,6 +659,7 @@ public class AplikasiManajemenProyek{
                     }
                 }
 
+                //Memberikan notifikasi jika proyek tidak ditemukan
                 if(!ditemukan) {
                     System.out.println(asciiColor(1) + "(!) Proyek Tidak Ditemukan!" + asciiColor(0));
                 } else {
@@ -625,15 +667,17 @@ public class AplikasiManajemenProyek{
                 }
             } 
         } catch (IOException e) {
+            //Handling error library
             System.out.println(asciiColor(1) + "(!) Terjadi Kesalahan Saat Mencari Proyek!" + asciiColor(0));
         }
     }
 
 
-    //===Function Dashboard Pekerja
+    //===Function Dashboard Pekerja - Menampilkan Dashboard Untuk Akun Pekerja
     static void dashboardPekerja(String username) {
         Scanner input = new Scanner(System.in);
         ringkasanProyek();
+        //Menampilkan select menu
         while (true) { 
             System.out.println("\n");
             System.out.println("[1] Lihat Proyek");
@@ -643,6 +687,7 @@ public class AplikasiManajemenProyek{
             System.out.print(asciiColor(2) + "-> Masukkan Pilihan: " + asciiColor(0));
             int pilihanMenu = input.nextInt();
 
+            //Mengarahkan ke function terkait sesuai dengan pilihan fitur
             if(pilihanMenu == 1) {
                 lihatProyek();
             } else if(pilihanMenu == 2) {
@@ -659,7 +704,7 @@ public class AplikasiManajemenProyek{
         input.close();
     }
 
-    //===Function Edit Jobdesk (param username from user input)
+    //===Function Edit Jobdesk - Mengedit Status Jobdesk Pekerja (Sudah/Belum) (param username from user input)
     static void editJobdesk(String username) {
         Scanner input = new Scanner(System.in);
 
@@ -673,11 +718,12 @@ public class AplikasiManajemenProyek{
         boolean diubah = false;
 
         try {
+            //Inisialisasi variabel dan library
             BufferedReader reader = new BufferedReader(new FileReader("ProjectData.txt"));
             String baris;
 
+            //Membaca seluruh data di ProjectData.txt
             while ((baris = reader.readLine()) != null) {
-
                 String[] data = baris.split(":");
                 if (data.length < 5) continue; // data rusak, skip
 
@@ -690,7 +736,6 @@ public class AplikasiManajemenProyek{
                 String newDataPekerja = "";
 
                 for (int i = 0; i < dataPekerja.length; i++) {
-
                     String[] detail = dataPekerja[i].split("-");
                     if (detail.length < 3) {
                         continue;
@@ -700,11 +745,12 @@ public class AplikasiManajemenProyek{
                     String jobdesk = detail[1];
                     String status = detail[2];
 
+                    //Nama pekerja harus sesuai dengan username akun, sehingga pekerja tidak bisa mengedit status jobdesk milik pekerja lainnya.
                     boolean milikUser = namaPekerja.trim().toLowerCase().equals(user);
                     boolean cocokKeyword = namaProyek.toLowerCase().contains(keyword) || jobdesk.toLowerCase().contains(keyword);
 
                     if (milikUser && status.equalsIgnoreCase("Belum") && cocokKeyword) {
-
+                        //Menampilkan proyek dan jobdesk yang akan diubah statusnya
                         System.out.println(asciiColor(3) + "Proyek  : " + asciiColor(0) + namaProyek);
                         System.out.println(asciiColor(3) + "Jobdesk : " + asciiColor(0) + jobdesk);
                         System.out.print(asciiColor(2) + "-> Tandai sebagai selesai? (ya/tidak): " + asciiColor(0));
@@ -722,11 +768,12 @@ public class AplikasiManajemenProyek{
                     }
                 }
 
+                //Membuat variabel baru hasil perubahan status
                 semuaData += namaProyek + ":" + anggaran + ":" + deadline + ":" + newDataPekerja + ":" + prioritas + "\n";
             }
 
             reader.close();
-
+            //Menulis ulang data di ProjectData.txt
             if (diubah) {
                 FileWriter writer = new FileWriter("ProjectData.txt");
                 writer.write(semuaData);
@@ -737,6 +784,7 @@ public class AplikasiManajemenProyek{
             }
 
         } catch (IOException e) {
+            //Handling error library
             System.out.println(asciiColor(1) + "(!) Terjadi kesalahan pada sistem!" + asciiColor(0));
         }
     }
@@ -745,13 +793,12 @@ public class AplikasiManajemenProyek{
     //===Main Function
 
     public static void main(String[] args) {
-        //Inisialisasi 
-
+        //Inisialisasi variabel dan library
         Scanner input = new Scanner(System.in);
         boolean statusLogin = false;
         boolean statusManajer = false;
 
-        //---Onboarding Page (Halaman Pembuka)
+        //Onboarding Page (Halaman Pembuka)
 
         System.out.println(asciiColor(1) + "==================================================================================================================================================" + asciiColor(0));
         System.out.println(asciiColor(2) + "                                    ____            _           _         __  __                                   " + asciiColor(0));
@@ -765,7 +812,7 @@ public class AplikasiManajemenProyek{
 
         System.out.println(asciiColor(3) + "                                                  Selamat Datang di Aplikasi Manajemen Proyek!" + asciiColor(0));
 
-        //Select Menu
+        //Select menu untuk onboarding page
 
         String username = "";
 
@@ -773,11 +820,13 @@ public class AplikasiManajemenProyek{
             System.out.println("\n");
             System.out.println("[1] Login");
             System.out.println("[2] Register");
-            System.out.println("[3] About");
-            System.out.println("[4] Exit");
+            System.out.println("[3] Exit");
             System.out.println(" ");
+            //Mengumpulkan data
             System.out.print(asciiColor(2) + "-> Masukkan Pilihan: " + asciiColor(0));
             int pilihanMenu = input.nextInt();
+
+            //Pilihan login
             if(pilihanMenu == 1) {
                 System.out.print(asciiColor(2) + "-> Masukkan Username: " + asciiColor(0));
                 username = input.next();
@@ -788,6 +837,7 @@ public class AplikasiManajemenProyek{
                 if(statusLogin){
                     break;
                 }
+            //Pilihan register
             }else if(pilihanMenu == 2) {
                 System.out.print(asciiColor(2) + "-> Buat Username: " + asciiColor(0));
                 String regUsername = input.next();
@@ -798,9 +848,8 @@ public class AplikasiManajemenProyek{
                 if(statusAkun.equals("manajer") || statusAkun.equals("pekerja")){
                     register(regUsername, regPassword, statusAkun);
                 }
+            //Pilihan keluar (exit)
             }else if(pilihanMenu == 3) {
-
-            }else if(pilihanMenu == 4) {
                 System.out.println(asciiColor(1) + "-> Aplikasi akan ditutup!" + asciiColor(0));
                 System.exit(0);
                 break;
@@ -809,7 +858,7 @@ public class AplikasiManajemenProyek{
             }
         }
         
-        //---Fitur Manajer
+        //Fitur Manajer (jika statusLogin benar dan statusManajer benar (akun berstatus manajer))
 
         if(statusLogin && statusManajer) {
             System.out.println("\n");
@@ -823,14 +872,12 @@ public class AplikasiManajemenProyek{
             System.out.println(asciiColor(1) + "==================================================================================================================================================" + asciiColor(0));
             System.out.println(asciiColor(3) + "                                                    Selamat Datang di Dashboard Manajer " + username + "!" + asciiColor(0));
 
-            //---Dashboard Admin
-
+            //Memanggil function dashboard manajer
             dashboardManajer();
         }
 
 
-        //---Fitur Pekerja
-
+        //Fitur Pekerja (jika statusLogin benar dan statusManajer salah (akun berstatus pekerja))
         if(statusLogin && !statusManajer) {
             System.out.println("\n");
             System.out.println(asciiColor(1) + "==================================================================================================================================================" + asciiColor(0));
@@ -843,7 +890,7 @@ public class AplikasiManajemenProyek{
             System.out.println(asciiColor(1) + "==================================================================================================================================================" + asciiColor(0));
             System.out.println(asciiColor(3) + "                                                    Selamat Datang di Dashboard Pekerja " + username + "!" + asciiColor(0));
 
-            //---Dashboard Pekerja
+            //Memanggil function dashboard pekerja
             dashboardPekerja(username);
         }
     }
