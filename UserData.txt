@@ -1,3 +1,9 @@
 nelsen:nelsen123:manajer
 budi:budi123:pekerja
 cristo:cristo123:manajer
+vian:vian123:manajer
+sugro:sugro123:manajer
+brama:brama123:pekerja
+angga:angga123:pekerja
+jovan:jovan123:pekerja
+frank:frank123:pekerja

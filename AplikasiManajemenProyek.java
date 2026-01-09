@@ -32,7 +32,7 @@ public class AplikasiManajemenProyek{
 
             while((baris = reader.readLine()) != null) {
                 //Membaca ":" sebagai pembatas (split)
-                String dataAkun[] = baris.split(":");
+                String dataAkun[] = baris.split(":  ");
 
                 if(dataAkun.length >= 2) {
                     //Memisahkan format username:password:statusAkun dari UserData.txt menjadi variabel tersendiri untuk username dan password
@@ -227,7 +227,7 @@ public class AplikasiManajemenProyek{
         if(text.length() > lebarKolom) {
             return text.substring(0, lebarKolom - 3) + "..."; //Apabila nama proyek atau lainnya terlalu panjang hingga melewati lebar kolom yang ditentukan, nama proyek akan dipotong sesuai lebar kolom lalu ditambahkan ... agar format tabel tetap rapih dan tidak berantakan
         }
-        return String.format("%-" + lebarKolom + "s", text); //Menghasilkan format untuk penulisan string yang dimasukkan ke dalam function, %- ditambahkan agar teks rata kiri, lebarKolom + s menandakan maksimal karakter dalam kolom tersebut
+        return String.format("%-" + lebarKolom + "s", text); //Menghasilkan format untuk penulisan string yang dimasukkan ke dalam function, %- ditambahkan agar teks rata kiri, lebarKolom  menandakan maksimal karakter dalam kolom tersebut
     }
 
     //=== Function Lihat Proyek - Menampilkan List Proyek dari Database

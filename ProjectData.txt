@@ -1,2 +1,4 @@
-Bedah Rumah:3000000:2026-08-17:Budi-Membeli Semen-Belum,Anton-Mengaduk Semen-Belum,Sutarji-Membangun Atap-Belum,Rizki-Mengecat Tembok-Belum:Sedang
+Bedah Rumah:4000000:2026-08-17:Budi-Membeli Semen-Sudah,Anton-Mengaduk Semen-Belum,Sutarji-Membangun Atap-Belum,Rizki-Mengecat Tembok-Belum:Sedang
 Ibu Kota Nusantara:450000000:2045-01-01:Chou-Membangun Istana Negara-Belum,Selena-Menanam Pohon-Belum,Harith-Membangun Taman-Belum,Zilong-Membangun Jalan-Belum:Tinggi
+Game Development:2000000:2027-04-03:Angga-Level Designer-Sudah,Yunanda-3D Designer-Belum,Iqbal-Head Developer-Belum,Ramadhan-Game Designer-Belum:Tinggi
+Website Development:47000000:2026-08-09:Frank-Front End Developer-Sudah,Bona-Back End Developer-Belum,Cristo-UI UX Designer-Belum:Sedang
